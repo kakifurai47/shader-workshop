@@ -85,34 +85,37 @@ Shader "Custom/dissolveShader"
                 return float4(float3(1, 1, 1) * th, 1);
             }
 
-
             float4 fs(Varyings i) : SV_Target
             {
                 float4 mainTex     = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, i.uv);
                 float4 overlayTex  = SAMPLE_TEXTURE2D(_OverlayMap, sampler_OverlayMap, i.uv);
                 float  maskTex = 1 - SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, i.uv).x;
 
-                float dissolve = _Dissolve - M_EPSILON; //ensure step(_dissolve = 0, mask = 0) != 0
+                float dissolve = _Dissolve + M_EPSILON; //ensure step(_dissolve = 0, mask = 0) != 0
                 float dissolve_mask = step(maskTex, dissolve);
 
-                float half_edge = 0.5 * _EdgeWidth;
-                float half_smoo = 0.5 * _EdgeSmoothness;
-                               
-                float s_max = dissolve - half_edge;
-                float s_min = s_max - half_smoo;
-                float s_threshold = smoothstep(s_min, s_max, maskTex);
-                
-                float e_min = dissolve + half_edge;
-                float e_max = e_min + half_smoo;                              
-                float e_threshold = smoothstep(e_min, e_max, maskTex);
-                float e_mask = step(maskTex, e_min);
+                float norm_max_edge_width = _EdgeWidth * dissolve;
+                float norm_min_edge_width = _EdgeWidth - norm_max_edge_width;
 
-                float4 fin_color = lerp(mainTex, overlayTex, dissolve_mask);
-                float  fin_mask  = lerp(1 - s_threshold, e_threshold, 1 - e_mask);
+                float lower_edge = dissolve - norm_min_edge_width;
+                float highr_edge = dissolve + norm_max_edge_width;
 
-                return lerp(_EdgeColor, fin_color, fin_mask);
+                float norm_max_soft_width = _EdgeSmoothness * dissolve;
+                float norm_min_soft_width = _EdgeSmoothness - norm_max_soft_width;
+
+                float lower_soft = lower_edge - norm_min_soft_width;
+                float highr_soft = highr_edge + norm_max_soft_width;
+
+                float lower_th = smoothstep(lower_soft, lower_edge, maskTex);
+                float highr_th = smoothstep(highr_edge, highr_soft, maskTex);
+
+                float temp_mask = step(maskTex, highr_edge);
+                float fina_mask = lerp(1 - lower_th, highr_th, 1 - temp_mask);
+
+                float4 fina_color = lerp(mainTex, overlayTex, dissolve_mask);
+                return lerp(_EdgeColor, fina_color, fina_mask);
             }
-            ENDHLSL
+            ENDHLSL            
         }
 
     }

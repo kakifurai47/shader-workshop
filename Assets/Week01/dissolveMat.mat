@@ -37,11 +37,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Debug: 0
-    - _Dissolve: 0
+    - _Dissolve: 1
     - _EdgeColor: 0.5
     - _EdgeDisplay: 0
-    - _EdgeSmoothness: 0.04
-    - _EdgeWidth: 0.02
+    - _EdgeSmoothness: 0.15
+    - _EdgeWidth: 0.11
     - _Glossiness: 0.5
     - _Metallic: 0
     - _StartEdge: 0
