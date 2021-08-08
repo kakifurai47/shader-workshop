@@ -12,10 +12,6 @@ Shader "Custom/dissolveShader"
         _EdgeSmoothness("EdgeSmoothness", Range(0.0, 1.0)) = 0.5
 
         _EdgeColor     ("EdgeColor", Color) = (1, 1, 1, 1)
-
-        [Toggle]_Debug("Debug", Float) = 0
-        [Toggle]_EdgeDisplay("Edge Display", Float) = 0
-        [Toggle]_StartEdge("Start Edge", Float) = 0
     }
     SubShader
     {
@@ -58,16 +54,13 @@ Shader "Custom/dissolveShader"
             CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST;
             float4 _BaseColor;
+            float4 _EdgeColor;
 
             float _Dissolve;
             float _EdgeWidth;
             float _EdgeSmoothness;
+            float pad0;
 
-            float4 _EdgeColor;
-
-            float _Debug;
-            float _EdgeDisplay;
-            float _StartEdge;
             CBUFFER_END
 
             #define M_EPSILON 0.00000000000000000000000001
@@ -111,11 +104,11 @@ Shader "Custom/dissolveShader"
 
                 float temp_mask = step(maskTex, highr_edge);
                 float fina_mask = lerp(1 - lower_th, highr_th, 1 - temp_mask);
-
+                //return debug_th(fina_mask);
                 float4 fina_color = lerp(mainTex, overlayTex, dissolve_mask);
                 return lerp(_EdgeColor, fina_color, fina_mask);
             }
-            ENDHLSL            
+            ENDHLSL
         }
 
     }
