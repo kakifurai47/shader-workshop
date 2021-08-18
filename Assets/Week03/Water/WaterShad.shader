@@ -56,10 +56,6 @@ Shader "Custom/WaterShad"
 
             float4 fs(Varyings i) : SV_Target
             {
-                if (i.positionWS.y > _WaterLv) {
-                    return _UnderWaterColor;
-                }
-
                 return _BaseColor;
             }
             ENDHLSL
