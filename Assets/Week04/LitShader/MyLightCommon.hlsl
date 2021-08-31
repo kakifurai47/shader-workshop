@@ -60,4 +60,14 @@ MySpotLight GetMySpotLight(int idx) {
 	l.invAngDif = offset3.x;
 	return l;
 }
+
+MyPointLight MyPointLightConstructor(MySpotLight s) {
+	MyPointLight p;
+	p.position  = s.position;
+	p.intensity = s.intensity;
+	p.color = s.color;
+	p.range = s.range;
+	return p;
+
+}
 #endif

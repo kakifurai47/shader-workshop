@@ -1,4 +1,4 @@
-Shader "Custom/MyDirLitShad"
+Shader "Custom/MyLitShad"
 {
     Properties
     {
@@ -10,16 +10,17 @@ Shader "Custom/MyDirLitShad"
 
         _Shininess("Shininess", Float) = 0
         [Toggle]_Debug("Debug", Float) = 0
+        [Toggle]_BatchBreaker("Batch Breaker", Float) = 0
     }
 
         SubShader
     {
-        Tags { "Queue" = "Geometry+10" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
+        Tags {"RenderType" = "Opaque" "Queue" = "Geometry" }
 
         Pass
         {
-            Name "ForwardLit"
-            Tags{"LightMode" = "UniversalForward"}
+            Name "MyLit"
+            //Tags{"LightMode" = "MyDeferredLit"}
 
             HLSLPROGRAM
 
@@ -55,6 +56,8 @@ Shader "Custom/MyDirLitShad"
             float _Shininess;
             float _Debug;
             CBUFFER_END
+            
+            float _BatchBreaker;
 
             #include "MyLightCommon.hlsl"
             #include "MyLightEquation.hlsl"
@@ -77,22 +80,24 @@ Shader "Custom/MyDirLitShad"
             float4 fs(Varyings i) : SV_Target
             {                
                 float4 unlitColor = _BaseColor * tex2D(_BaseMap, i.uv);
-                float4 outputColor = unlitColor;
-
+                float4 outputColor = float4(0, 0, 0, 1);
+                
                 for (int p = 0; p < my_pointLightSize; p++) {
                     MyPointLight ptLight = GetMyPointLight(p);
-                    outputColor += GetPointLightShading(i.positionWS, i.normalWS, ptLight);
+                    outputColor += unlitColor * GetPointLightShading(i.positionWS, i.normalWS, ptLight);
                 }
 
                 for (int s = 0; s < my_spotLightSize; s++) {
-                    MySpotLight spotLight = GetMySpotLight(s);           
-                    outputColor += GetSpotLightShading(i.positionWS, i.normalWS, spotLight);
+                    MySpotLight spotLight = GetMySpotLight(s);
+                    outputColor += unlitColor * GetSpotLightShading(i.positionWS, i.normalWS, spotLight);
+                    //TODO: reuse GetPointShading();
                 }
 
-                return outputColor;
+                return outputColor + (_BatchBreaker * 0.000001);
             }
             ENDHLSL
         }
+
     }
 
 }

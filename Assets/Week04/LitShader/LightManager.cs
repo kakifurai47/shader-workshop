@@ -99,7 +99,7 @@ public class LightHub
         buf[index * 4 + 1] = new Vector4(direction.x, direction.y, direction.z, intensity);
         buf[index * 4 + 2] = new Vector4(color.r, color.g, color.b, cosOuter);
         buf[index * 4 + 3] = new Vector4(invAngDif, 0, 0, 0);
-    }   
+    }
 
     int pointLightBufferSizeID = Shader.PropertyToID("my_pointLightSize");
     int pointLightBufferID     = Shader.PropertyToID("my_pointLightBuf");
