@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MyTransparentMat
+  m_Shader: {fileID: 4800000, guid: f7032b2479c8ff448ae7d7bc9f1063d0, type: 3}
+  m_ShaderKeywords: _BATCHBREAKER_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BatchBreaker: 1
+    - _Debug: 0
+    - _Debug2: 0
+    - _DstBlend: 10
+    - _Glossiness: 0.5
+    - _Metallic: 0
+    - _Shininess: 7.55
+    - _SrcBlend: 5
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.4627451}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DiffuseColor: {r: 0.42745098, g: 0.45882353, b: 0.62352943, a: 1}
+    - _SpecularColor: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
+  m_BuildTextureStacks: []

@@ -16,5 +16,8 @@ public abstract class MyBaseMonoRenderPass : MonoBehaviour
         MyRenderPassManager.instance.Unregister(this);
     }
 
+    public abstract void OnConfigure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor);
     public abstract void OnExecute(ScriptableRenderContext context, ref RenderingData renderingData);
+    public abstract void OnFrameCleanUp(CommandBuffer cmd);
+
 }

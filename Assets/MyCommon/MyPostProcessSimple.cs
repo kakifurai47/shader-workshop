@@ -2,11 +2,16 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
+[ExecuteInEditMode]
 public class MyPostProcessSimple : MyBaseMonoRenderPass
 {
     public Material postProcessMaterial;
 
     static Mesh fullScreenTriangle;
+
+    public RenderTextureDescriptor d;
+
+    public override void OnConfigure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor) {; }
 
     public override void OnExecute(ScriptableRenderContext context, ref RenderingData renderingData) {
         if (!postProcessMaterial) return;
@@ -30,5 +35,9 @@ public class MyPostProcessSimple : MyBaseMonoRenderPass
         context.ExecuteCommandBuffer(cmd);
         cmd.Clear();
         CommandBufferPool.Release(cmd);
+
+        d = renderingData.cameraData.cameraTargetDescriptor;
     }
+
+    public override void OnFrameCleanUp(CommandBuffer cmd) {; }
 }

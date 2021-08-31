@@ -24,9 +24,18 @@ public class MyScriptableRenderPass : ScriptableRenderPass
         m_pass = pass_;
     }
 
+    public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor) {
+        m_pass?.OnConfigure(cmd, cameraTextureDescriptor);
+    }
+
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData) {
         m_pass?.OnExecute(context, ref renderingData);
     }
+
+    public override void FrameCleanup(CommandBuffer cmd) {
+        m_pass?.OnFrameCleanUp(cmd);
+    }
+
 }
 
 public class MyRenderPassManager
