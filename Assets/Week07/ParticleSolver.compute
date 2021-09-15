@@ -1,0 +1,84 @@
+#pragma kernel CSMain
+
+#define PARTICLE_EFFECT_COMPUTE 1
+
+#define PARAM_SIZE 3
+#define STATE_SIZE 1
+
+struct ParticleParameters
+{
+    int    particleCapacity;
+    int    activeCount;
+    float  lifeSpan;
+    float  deltaTime;
+
+    float3 forceField;
+    float  gravity;
+    
+    float3 initVelocity;
+    int    idxCntPerParticle;
+};
+
+struct VertexInputs {
+    float3 positionOS;
+    float2 uv;
+};
+
+struct ParticleStates {
+    float3 velocity;
+    float  timeSpan;
+};
+
+float4 ParticleEffect_Param[PARAM_SIZE];
+
+RWStructuredBuffer<ParticleStates> ParticleEffect_States;
+
+RWStructuredBuffer<VertexInputs>   ParticleEffect_InstanceVtxs;
+RWStructuredBuffer<uint>           ParticleEffect_InstanceIdxs;
+
+RWStructuredBuffer<VertexInputs>   ParticleEffect_CombineVtxs;
+RWStructuredBuffer<uint>           ParticleEffect_CombineIdxs;
+
+ParticleParameters GetParams() {
+    float4 offset0 = ParticleEffect_Param[0];
+    float4 offset1 = ParticleEffect_Param[1];
+    float4 offset2 = ParticleEffect_Param[2];
+
+    ParticleParameters param;
+    param.particleCapacity = offset0.x;
+    param.activeCount = offset0.y;
+    param.lifeSpan = offset0.z;
+    param.deltaTime = offset0.w;
+
+    param.forceField = offset1.xyz;
+    param.gravity = offset1.w;
+
+    param.initVelocity = offset2.xyz;
+    param.idxCntPerParticle = offset2.w;
+
+    return param;
+}
+
+void Initialize(int pIdx) {//<= per particle Idx
+
+
+
+
+}
+
+void Update(int pIdx) {
+
+}
+
+void End(int pIdx) {
+
+}
+
+
+
+
+[numthreads(64, 1, 1  )]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+
+}
